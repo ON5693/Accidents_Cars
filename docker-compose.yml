@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+
+  db:
+    build: .docker/postgres
+    container_name: protectedcars-db
+    restart: always
+    tty: true
+    ports:
+      - "5432:5432"
+    volumes:
+      - .docker/db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=protectedcars
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: protectedcars-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    
